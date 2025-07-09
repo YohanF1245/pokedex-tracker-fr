@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Pokédex Stylé</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 40px;
+      background: linear-gradient(135deg, #f0f0f0, #e0f7fa);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      padding: 20px;
+      transition: transform 0.2s ease;
+      text-align: center;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card img {
+      width: 100px;
+      height: 100px;
+      image-rendering: pixelated;
+    }
+
+    .card h3 {
+      margin: 10px 0 5px;
+      font-size: 18px;
+      color: #00796B;
+    }
+
+    .card p {
+      margin: 0;
+      color: #555;
+      font-size: 14px;
+    }
+
+    .form {
+      margin-top: 8px;
+      font-weight: bold;
+      color: #444;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Pokédex Stylé 🌟</h1>
+  <div class="grid" id="root"></div>
+
+  <script>
+    fetch('pokemon.json')
+      .then(res => res.json())
+      .then(pokemons => {
+        const root = document.getElementById("root");
+        pokemons.forEach(pokemon => {
+          const card = document.createElement("div");
+          card.className = "card";
+          card.innerHTML = `
+            <img src="${pokemon.image_url}" alt="${pokemon.name_fr}">
+            <h3>#${pokemon.number} - ${pokemon.name_fr}</h3>
+            <p>${pokemon.name_en}</p>
+            <div class="form">${pokemon.form}</div>
+          `;
+          root.appendChild(card);
+        });
+      })
+      .catch(err => {
+        console.error("Erreur lors du chargement du JSON :", err);
+      });
+  </script>
+
+</body>
+</html>
