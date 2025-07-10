@@ -17,10 +17,16 @@
       color: #333;
     }
 
-    .grid {
+    .group {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(6, 1fr);
       gap: 20px;
+      border: 1px solid black;
+      padding: 20px;
+      margin-bottom: 20px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
 
     .card {
@@ -64,24 +70,37 @@
 <body>
 
   <h1>Pokédex Stylé 🌟</h1>
-  <div class="grid" id="root"></div>
+  <div id="root"></div>
 
   <script>
     fetch('pokemon.json')
       .then(res => res.json())
       .then(pokemons => {
         const root = document.getElementById("root");
-        pokemons.forEach(pokemon => {
-          const card = document.createElement("div");
-          card.className = "card";
-          card.innerHTML = `
-            <img src="${pokemon.image_url}" alt="${pokemon.name_fr}">
-            <h3>#${pokemon.number} - ${pokemon.name_fr}</h3>
-            <p>${pokemon.name_en}</p>
-            <div class="form">${pokemon.form}</div>
+        let html = '';
+        
+        pokemons.forEach((pokemon, index) => {
+          // Open a new group div every 30 Pokémon
+          if (index % 30 === 0) {
+            html += '<div class="group">';
+          }
+          
+          html += `
+            <div class="card">
+              <img src="${pokemon.image_url}" alt="${pokemon.name_fr}">
+              <h3>#${pokemon.number} - ${pokemon.name_fr}</h3>
+              <p>${pokemon.name_en}</p>
+              <div class="form">${pokemon.form}</div>
+            </div>
           `;
-          root.appendChild(card);
+          
+          // Close the group div every 30 Pokémon or at the end
+          if ((index + 1) % 30 === 0 || index === pokemons.length - 1) {
+            html += '</div>';
+          }
         });
+        
+        root.innerHTML = html;
       })
       .catch(err => {
         console.error("Erreur lors du chargement du JSON :", err);
