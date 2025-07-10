@@ -43,23 +43,23 @@ galar_forms = ["meowth", "ponyta", "rapidash", "slowpoke", "slowbro", "farfetchd
 hisui_forms = ["growlithe", "arcanine", "voltorb", "electrode", "typhlosion", "qwilfish", "sneasel", "samurott", "lilligant", "zorua", "zoroark", "braviary", "sliggoo", "goodra", "avalugg", "decidueye"]
 paldea_forms = ["tauros", "wooper"]
 
-# for i in range(1, 1025):
-#     get_pokemon_data(i, "base")
+for i in range(1, 1025):
+    get_pokemon_data(i, "base")
 
-# for pokemon in alolan_forms:
-#     get_pokemon_data(pokemon, "alola")
+for pokemon in alolan_forms:
+    get_pokemon_data(pokemon, "alola")
 
-# for pokemon in galar_forms:
-#     if (pokemon == "darmanitan"):
-#         get_pokemon_data(pokemon, "galar-standard")
-#     else:
-#         get_pokemon_data(pokemon, "galar")
+for pokemon in galar_forms:
+    if (pokemon == "darmanitan"):
+        get_pokemon_data(pokemon, "galar-standard")
+    else:
+        get_pokemon_data(pokemon, "galar")
 
-# for pokemon in hisui_forms:
-#     get_pokemon_data(pokemon, "hisui")
+for pokemon in hisui_forms:
+    get_pokemon_data(pokemon, "hisui")
 
-# get_pokemon_data("tauros", "paldea-combat-breed")
-# get_pokemon_data("wooper", "paldea")
+get_pokemon_data("tauros", "paldea-combat-breed")
+get_pokemon_data("wooper", "paldea")
 
 def dump_json():
    # Connexion à la base
