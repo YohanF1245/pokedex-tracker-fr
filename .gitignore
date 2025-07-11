@@ -10,6 +10,10 @@
 !pokedex_flutter_app/
 !pokedex_flutter_app/**
 
+# Keep releases directory
+!releases/
+!releases/**
+
 # But ignore Flutter build outputs and temp files
 pokedex_flutter_app/build/
 pokedex_flutter_app/.dart_tool/
