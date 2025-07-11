@@ -1,0 +1,18 @@
+# Ignore everything except essential files
+*
+
+# Keep essential project files
+!.gitignore
+!index.html
+!simple_dex_base.py
+
+# Keep Flutter app and all its necessary files
+!pokedex_flutter_app/
+!pokedex_flutter_app/**
+
+# But ignore Flutter build outputs and temp files
+pokedex_flutter_app/build/
+pokedex_flutter_app/.dart_tool/
+pokedex_flutter_app/.idea/
+pokedex_flutter_app/.vscode/
+pokedex_flutter_app/pubspec.lock 
