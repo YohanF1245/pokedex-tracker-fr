@@ -17,8 +17,11 @@ def get_pokemon_data(pokemon_id, form):
     response = requests.get(urlData)
     data = response.json()
 
-    name_fr = data['names'][4]['name']
-    name_en = data['names'][8]['name']
+    for name in data['names']:
+        if name['language']['name'] == "fr":
+            name_fr = name['name']
+        if name['language']['name'] == "en":
+            name_en = name['name']
     number = data['pokedex_numbers'][0]['entry_number']
     if (form == "base"):
         urlImage = f"https://pokeapi.co/api/v2/pokemon/{pokemon_id}"
