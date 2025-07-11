@@ -3449,7 +3449,7 @@
   },
   {
     "id": 432,
-    "name_fr": "東施喵",
+    "name_fr": "Chaffreux",
     "name_en": "Purugly",
     "number": 432,
     "image_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/432.png",
@@ -4033,7 +4033,7 @@
   },
   {
     "id": 505,
-    "name_fr": "步哨鼠",
+    "name_fr": "Miradar",
     "name_en": "Watchog",
     "number": 505,
     "image_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/505.png",
@@ -6089,7 +6089,7 @@
   },
   {
     "id": 762,
-    "name_fr": "甜舞妮",
+    "name_fr": "Candine",
     "name_en": "Steenee",
     "number": 762,
     "image_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/762.png",
@@ -7329,7 +7329,7 @@
   },
   {
     "id": 917,
-    "name_fr": "團珠蛛",
+    "name_fr": "Tissenboule",
     "name_en": "Tarountula",
     "number": 917,
     "image_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/917.png",
@@ -8081,48 +8081,48 @@
   },
   {
     "id": 1011,
-    "name_fr": "Sirapfel",
-    "name_en": "カミッチュ",
+    "name_fr": "Pomdramour",
+    "name_en": "Dipplin",
     "number": 1011,
     "image_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/1011.png",
     "form": "base"
   },
   {
     "id": 1012,
-    "name_fr": "Mortcha",
-    "name_en": "チャデス",
+    "name_fr": "Poltchageist",
+    "name_en": "Poltchageist",
     "number": 1012,
     "image_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/1012.png",
     "form": "base"
   },
   {
     "id": 1013,
-    "name_fr": "Fatalitcha",
-    "name_en": "ヤバソチャ",
+    "name_fr": "Théffroyable",
+    "name_en": "Sinistcha",
     "number": 1013,
     "image_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/1013.png",
     "form": "base"
   },
   {
     "id": 1014,
-    "name_fr": "Boninu",
-    "name_en": "イイネイヌ",
+    "name_fr": "Félicanis",
+    "name_en": "Okidogi",
     "number": 1014,
     "image_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/1014.png",
     "form": "base"
   },
   {
     "id": 1015,
-    "name_fr": "Benesaru",
-    "name_en": "マシマシラ",
+    "name_fr": "Fortusimia",
+    "name_en": "Munkidori",
     "number": 1015,
     "image_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/1015.png",
     "form": "base"
   },
   {
     "id": 1016,
-    "name_fr": "Beatori",
-    "name_en": "キチキギス",
+    "name_fr": "Favianos",
+    "name_en": "Fezandipiti",
     "number": 1016,
     "image_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/1016.png",
     "form": "base"
@@ -8130,55 +8130,55 @@
   {
     "id": 1017,
     "name_fr": "Ogerpon",
-    "name_en": "オーガポン",
+    "name_en": "Ogerpon",
     "number": 1017,
     "image_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/1017.png",
     "form": "base"
   },
   {
     "id": 1018,
-    "name_fr": "Briduradon",
-    "name_en": "ブリジュラス",
+    "name_fr": "Pondralugon",
+    "name_en": "Archaludon",
     "number": 1018,
     "image_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/1018.png",
     "form": "base"
   },
   {
     "id": 1019,
-    "name_fr": "Hydrapfel",
-    "name_en": "カミツオロチ",
+    "name_fr": "Pomdorochi",
+    "name_en": "Hydrapple",
     "number": 1019,
     "image_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/1019.png",
     "form": "base"
   },
   {
     "id": 1020,
-    "name_fr": "Keilflamme",
-    "name_en": "ウガツホムラ",
+    "name_fr": "Feu-Perçant",
+    "name_en": "Gouging Fire",
     "number": 1020,
     "image_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/1020.png",
     "form": "base"
   },
   {
     "id": 1021,
-    "name_fr": "Furienblitz",
-    "name_en": "タケルライコ",
+    "name_fr": "Ire-Foudre",
+    "name_en": "Raging Bolt",
     "number": 1021,
     "image_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/1021.png",
     "form": "base"
   },
   {
     "id": 1022,
-    "name_fr": "Eisenfels",
-    "name_en": "テツノイワオ",
+    "name_fr": "Roc-de-Fer",
+    "name_en": "Iron Boulder",
     "number": 1022,
     "image_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/1022.png",
     "form": "base"
   },
   {
     "id": 1023,
-    "name_fr": "Eisenhaupt",
-    "name_en": "テツノカシラ",
+    "name_fr": "Chef-de-Fer",
+    "name_en": "Iron Crown",
     "number": 1023,
     "image_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/1023.png",
     "form": "base"
@@ -8186,7 +8186,7 @@
   {
     "id": 1024,
     "name_fr": "Terapagos",
-    "name_en": "テラパゴス",
+    "name_en": "Terapagos",
     "number": 1024,
     "image_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/1024.png",
     "form": "base"
