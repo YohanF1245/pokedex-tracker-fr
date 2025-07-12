@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Pokéball Background Circle -->
+  <circle cx="256" cy="256" r="240" fill="white" stroke="black" stroke-width="16"/>
+  
+  <!-- Red Top Half -->
+  <path d="M 256 16 A 240 240 0 0 1 256 256 Z" fill="#ff0000"/>
+  
+  <!-- White Bottom Half -->
+  <path d="M 256 256 A 240 240 0 0 1 256 496 Z" fill="white"/>
+  
+  <!-- Middle Black Line -->
+  <rect x="16" y="248" width="480" height="16" fill="black"/>
+  
+  <!-- Center White Circle -->
+  <circle cx="256" cy="256" r="50" fill="white" stroke="black" stroke-width="8"/>
+  
+  <!-- Center Inner Circle -->
+  <circle cx="256" cy="256" r="25" fill="white" stroke="black" stroke-width="4"/>
+</svg> 

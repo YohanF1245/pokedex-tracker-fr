@@ -1,16 +1,50 @@
-# pokedex_flutter_app
+# Shiny Tracker
 
-A new Flutter project.
+Une application Flutter pour tracker vos captures de Pokémon et particulièrement vos shiny !
 
-## Getting Started
+## Fonctionnalités
 
-This project is a starting point for a Flutter application.
+- ✨ **Calcul correct des pourcentages de shiny** basé sur les Pokémon disponibles
+- 📱 **Tracking des captures** : Non capturé, Normal, Shiny
+- 🎯 **Statistiques par génération** avec barres de progression
+- 🔍 **Recherche** en temps réel par nom ou numéro
+- 📊 **Suivi des progrès** avec pourcentages de completion
+- 💾 **Export CSV** directement dans le dossier Téléchargements
+- 📤 **Import CSV** pour restaurer ou synchroniser vos données
+- ⚙️ **Grille configurable** : 3, 4, 5, 6 ou 7 Pokémon par ligne
+- 🌍 **Formes régionales** : Alola, Galar, Hisui, Paldea
+- 📋 **Compatible Pokémon HOME** : organisé par lots de 30
 
-A few resources to get you started if this is your first Flutter project:
+## Génération de l'icône Pokéball
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Pour générer l'icône de l'app avec la pokéball :
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. Installer les dépendances :
+```bash
+flutter pub get
+```
+
+2. Convertir le SVG en PNG (512x512) avec un outil en ligne ou Inkscape
+
+3. Sauvegarder le PNG dans `assets/icon/pokeball_icon.png`
+
+4. Générer les icônes pour toutes les plateformes :
+```bash
+flutter pub run flutter_launcher_icons:main
+```
+
+## Installation et utilisation
+
+1. Cloner le repository
+2. `flutter pub get`
+3. `flutter run`
+
+## Structure des données
+
+L'app utilise une base SQLite avec :
+- ID, noms français/anglais, numéro Pokédex
+- Forme (base, alola, galar, hisui, paldea)
+- Statut de capture (0=non capturé, 1=normal, 2=shiny)
+- Génération automatiquement assignée
+
+Format d'export : CSV avec toutes les données de capture.

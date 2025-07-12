@@ -18,7 +18,7 @@ class PokedexApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Pokédex Tracker',
+      title: 'Shiny Tracker',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         fontFamily: 'Segoe UI',
@@ -947,9 +947,39 @@ class _PokedexScreenState extends State<PokedexScreen> {
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
       appBar: AppBar(
-        title: const Text(
-          'Pokédex Tracker 🌟',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Row(
+          children: [
+            Container(
+              width: 24,
+              height: 24,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Colors.red, Colors.white],
+                  stops: [0.5, 0.5],
+                ),
+                border: Border.all(color: Colors.black, width: 1),
+              ),
+              child: Center(
+                child: Container(
+                  width: 6,
+                  height: 6,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white,
+                    border: Border.all(color: Colors.black, width: 1),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            const Text(
+              'Shiny Tracker 🌟',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
         ),
         backgroundColor: Colors.blue.shade600,
         foregroundColor: Colors.white,

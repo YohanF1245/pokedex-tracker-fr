@@ -8,15 +8,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:pokedex_flutter_app/main.dart';
+import 'package:shiny_tracker/main.dart';
 
 void main() {
-  testWidgets('Pokédex app smoke test', (WidgetTester tester) async {
+  testWidgets('Shiny Tracker app smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(const PokedexApp());
 
     // Verify that we have the app title
-    expect(find.text('Pokédex Tracker 🌟'), findsOneWidget);
+    expect(find.text('Shiny Tracker 🌟'), findsOneWidget);
 
     // Verify that we have a search bar
     expect(find.byIcon(Icons.search), findsOneWidget);
