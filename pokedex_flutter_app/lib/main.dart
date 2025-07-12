@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
 import 'database_service.dart';
 import 'pokemon.dart';
@@ -43,11 +46,13 @@ class _PokedexScreenState extends State<PokedexScreen> {
   bool isLoading = true;
   String searchQuery = '';
   int currentStatsPage = 0;
+  int pokemonPerRow = 5; // Default value
 
   @override
   void initState() {
     super.initState();
     _loadPokemon();
+    _loadSettings();
     _searchController.addListener(_onSearchChanged);
   }
 
@@ -57,6 +62,18 @@ class _PokedexScreenState extends State<PokedexScreen> {
     _searchController.dispose();
     _statsPageController.dispose();
     super.dispose();
+  }
+
+  Future<void> _loadSettings() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      pokemonPerRow = prefs.getInt('pokemonPerRow') ?? 5;
+    });
+  }
+
+  Future<void> _saveSettings() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('pokemonPerRow', pokemonPerRow);
   }
 
   void _onSearchChanged() {
@@ -147,26 +164,49 @@ class _PokedexScreenState extends State<PokedexScreen> {
         csvContent += '${pokemon.id},"${pokemon.nameFr}","${pokemon.nameEn}",${pokemon.number},"${pokemon.form}",${pokemon.generation},"${pokemon.status}","$statusText"\n';
       }
       
-      // Get documents directory
-      final directory = await getApplicationDocumentsDirectory();
-      final file = File('${directory.path}/pokemon_capture_data.csv');
-      
-      // Write to file
-      await file.writeAsString(csvContent);
-      
-      // Share the file
-      await Share.shareXFiles(
-        [XFile(file.path)],
-        text: 'Données de capture Pokédex - ${DateTime.now().toIso8601String().split('T')[0]}',
-      );
-      
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Données exportées avec succès !'),
-            backgroundColor: Colors.green,
-          ),
+      // Request storage permission
+      final permission = await Permission.storage.request();
+      if (permission.isGranted || await Permission.manageExternalStorage.request().isGranted) {
+        // Save to Downloads folder
+        final directory = Directory('/storage/emulated/0/Download');
+        if (!directory.existsSync()) {
+          // Fallback to app documents directory
+          final appDir = await getApplicationDocumentsDirectory();
+          final file = File('${appDir.path}/pokemon_capture_data.csv');
+          await file.writeAsString(csvContent);
+        } else {
+          final file = File('${directory.path}/pokemon_capture_data_${DateTime.now().millisecondsSinceEpoch}.csv');
+          await file.writeAsString(csvContent);
+        }
+        
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Fichier sauvegardé dans le dossier Téléchargements !'),
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
+      } else {
+        // Fallback to old sharing method
+        final directory = await getApplicationDocumentsDirectory();
+        final file = File('${directory.path}/pokemon_capture_data.csv');
+        await file.writeAsString(csvContent);
+        
+        // Share the file
+        await Share.shareXFiles(
+          [XFile(file.path)],
+          text: 'Données de capture Pokédex - ${DateTime.now().toIso8601String().split('T')[0]}',
         );
+        
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Données exportées avec succès !'),
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
       }
     } catch (e) {
       print('Error exporting data: $e');
@@ -181,12 +221,70 @@ class _PokedexScreenState extends State<PokedexScreen> {
     }
   }
 
+  Future<void> _importCaptureData() async {
+    try {
+      final result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['csv'],
+      );
+      
+      if (result != null && result.files.single.path != null) {
+        final file = File(result.files.single.path!);
+        final contents = await file.readAsString();
+        
+        // Parse CSV
+        final lines = contents.split('\n');
+        if (lines.isEmpty) return;
+        
+        // Skip header
+        int importedCount = 0;
+        for (int i = 1; i < lines.length; i++) {
+          final line = lines[i].trim();
+          if (line.isEmpty) continue;
+          
+          final parts = line.split(',');
+          if (parts.length >= 7) {
+            final id = int.tryParse(parts[0]);
+            final status = int.tryParse(parts[6]);
+            
+            if (id != null && status != null) {
+              await _databaseService.updatePokemonStatus(id, status);
+              importedCount++;
+            }
+          }
+        }
+        
+        // Reload data
+        await _loadPokemon();
+        
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Import terminé ! $importedCount Pokémon mis à jour.'),
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      print('Error importing data: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Erreur lors de l\'import'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
   Color _getStatusColor(int status) {
     switch (status) {
       case 1:
-        return Colors.green.withOpacity(0.7); // Caught normal
+        return Colors.green.withValues(alpha: 0.7); // Caught normal
       case 2:
-        return Colors.yellow.withOpacity(0.7); // Caught shiny
+        return Colors.yellow.withValues(alpha: 0.7); // Caught shiny
       default:
         return Colors.transparent; // Not caught
     }
@@ -389,7 +487,7 @@ class _PokedexScreenState extends State<PokedexScreen> {
               border: Border.all(color: Colors.grey.shade300),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.1),
+                  color: Colors.grey.withValues(alpha: 0.1),
                   spreadRadius: 1,
                   blurRadius: 3,
                   offset: const Offset(0, 2),
@@ -413,8 +511,8 @@ class _PokedexScreenState extends State<PokedexScreen> {
                 GridView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 5,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: pokemonPerRow,
                     crossAxisSpacing: 6,
                     mainAxisSpacing: 6,
                     childAspectRatio: 0.7,
@@ -445,7 +543,8 @@ class _PokedexScreenState extends State<PokedexScreen> {
     }
     totalCaught = totalNormal + totalShiny;
     final captureProgress = totalPokemon > 0 ? (totalCaught / totalPokemon * 100) : 0.0;
-    final shinyProgress = totalCaught > 0 ? (totalShiny / totalCaught * 100) : 0.0;
+    // FIXED: Calculate shiny percentage based on total available Pokemon, not just caught ones
+    final shinyProgress = totalPokemon > 0 ? (totalShiny / totalPokemon * 100) : 0.0;
 
     return Container(
       margin: const EdgeInsets.all(16),
@@ -535,7 +634,8 @@ class _PokedexScreenState extends State<PokedexScreen> {
     final normalCaught = stats['caught_normal'] ?? 0;
     final shinyCaught = stats['caught_shiny'] ?? 0;
     final captureProgress = total > 0 ? (caught / total * 100) : 0.0;
-    final shinyProgress = caught > 0 ? (shinyCaught / caught * 100) : 0.0;
+    // FIXED: Calculate shiny percentage based on total available Pokemon, not just caught ones
+    final shinyProgress = total > 0 ? (shinyCaught / total * 100) : 0.0;
 
     // Generate different colors for each generation
     final colors = [
@@ -764,7 +864,7 @@ class _PokedexScreenState extends State<PokedexScreen> {
         border: Border.all(color: Colors.grey.shade300),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey.withValues(alpha: 0.1),
             spreadRadius: 1,
             blurRadius: 3,
             offset: const Offset(0, 2),
@@ -780,6 +880,57 @@ class _PokedexScreenState extends State<PokedexScreen> {
           contentPadding: EdgeInsets.symmetric(vertical: 15),
         ),
       ),
+    );
+  }
+
+  void _showSettingsDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Paramètres'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text('Nombre de Pokémon par ligne :'),
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [3, 4, 5, 6, 7].map((count) {
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        pokemonPerRow = count;
+                      });
+                      _saveSettings();
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: pokemonPerRow == count ? Colors.blue : Colors.grey.shade200,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        count.toString(),
+                        style: TextStyle(
+                          color: pokemonPerRow == count ? Colors.white : Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Fermer'),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -805,9 +956,19 @@ class _PokedexScreenState extends State<PokedexScreen> {
         elevation: 2,
         actions: [
           IconButton(
+            onPressed: _importCaptureData,
+            icon: const Icon(Icons.upload),
+            tooltip: 'Importer les données',
+          ),
+          IconButton(
             onPressed: _exportCaptureData,
             icon: const Icon(Icons.download),
             tooltip: 'Exporter les données',
+          ),
+          IconButton(
+            onPressed: _showSettingsDialog,
+            icon: const Icon(Icons.settings),
+            tooltip: 'Paramètres',
           ),
         ],
       ),
