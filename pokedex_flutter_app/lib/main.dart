@@ -371,6 +371,11 @@ class _PokedexScreenState extends State<PokedexScreen> {
   }
 
   Widget _buildPokemonCard(Pokemon pokemon) {
+    // Adjust font sizes based on grid density
+    double nameFontSize = pokemonPerRow <= 5 ? 9 : (pokemonPerRow == 6 ? 8 : 7);
+    double numberFontSize = pokemonPerRow <= 5 ? 8 : (pokemonPerRow == 6 ? 7 : 6);
+    double statusFontSize = pokemonPerRow <= 5 ? 7 : (pokemonPerRow == 6 ? 6 : 5);
+    
     return GestureDetector(
       onTap: () => _updatePokemonStatus(pokemon),
       onLongPress: () => _showPokemonModal(pokemon),
@@ -393,7 +398,7 @@ class _PokedexScreenState extends State<PokedexScreen> {
                   errorBuilder: (context, error, stackTrace) {
                     return Icon(
                       Icons.catching_pokemon,
-                      size: 30,
+                      size: pokemonPerRow <= 5 ? 30 : (pokemonPerRow == 6 ? 25 : 20),
                       color: Colors.grey.shade400,
                     );
                   },
@@ -403,14 +408,14 @@ class _PokedexScreenState extends State<PokedexScreen> {
             Expanded(
               flex: 2,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                padding: const EdgeInsets.symmetric(horizontal: 1.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       pokemon.nameFr,
-                      style: const TextStyle(
-                        fontSize: 9,
+                      style: TextStyle(
+                        fontSize: nameFontSize,
                         fontWeight: FontWeight.bold,
                       ),
                       textAlign: TextAlign.center,
@@ -420,15 +425,15 @@ class _PokedexScreenState extends State<PokedexScreen> {
                     Text(
                       '#${pokemon.number.toString().padLeft(4, '0')}',
                       style: TextStyle(
-                        fontSize: 8,
+                        fontSize: numberFontSize,
                         color: Colors.grey.shade600,
                       ),
                     ),
                     if (pokemon.status > 0)
                       Text(
                         _getStatusText(pokemon.status),
-                        style: const TextStyle(
-                          fontSize: 7,
+                        style: TextStyle(
+                          fontSize: statusFontSize,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -515,7 +520,7 @@ class _PokedexScreenState extends State<PokedexScreen> {
                     crossAxisCount: pokemonPerRow,
                     crossAxisSpacing: 6,
                     mainAxisSpacing: 6,
-                    childAspectRatio: 0.7,
+                    childAspectRatio: pokemonPerRow <= 4 ? 0.7 : (pokemonPerRow <= 6 ? 0.65 : 0.6),
                   ),
                   itemCount: batch.length,
                   itemBuilder: (context, index) {
